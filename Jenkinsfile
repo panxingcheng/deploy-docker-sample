@@ -12,14 +12,10 @@ pipeline {
                 sh 'mvn clean package'
             }
         }
-        stage('Test') {
-            agent {
-                docker {
-                    image 'maven:3.8.6-eclipse-temurin-17-alpine'
-                }
-            }
+        stage('Deploy') {
+            agent any
             steps {
-                sh 'mvn --version'
+                sh 'docker run -d -p 8080:8080 --name deploy-docker-sample localhost:5000/deploy-docker-sample:0.0.1-SNAPSHOT'
             }
         }
     }
